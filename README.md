@@ -24,7 +24,3 @@ Image #1            |  Image #2
 1. Command to generate schema:
    ```bash
    ./gradlew :app:downloadApolloSchema --endpoint='https://countries.trevorblades.com/graphql' --schema=app/src/main/graphql/com/artemissoftware/schema.graphqls
-
-
-
-
