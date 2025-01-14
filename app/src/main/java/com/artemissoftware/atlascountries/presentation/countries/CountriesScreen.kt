@@ -17,12 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.artemissoftware.atlascountries.presentation.countries.composables.CountryDialog
 import com.artemissoftware.atlascountries.presentation.countries.composables.CountryItem
 
 @Composable
 fun CountriesScreen(
-    viewModel: CountriesViewModel
+    viewModel: CountriesViewModel = hiltViewModel()
 ) {
     CountriesContent(
         state = viewModel.state.collectAsState().value,
