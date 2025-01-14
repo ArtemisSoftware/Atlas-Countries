@@ -4,5 +4,6 @@ query Countries {
         capital
         code
         emoji
+        name
     }
 }
