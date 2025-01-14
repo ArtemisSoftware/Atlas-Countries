@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -36,35 +37,38 @@ private fun CountriesContent(
     state: CountriesState,
     event: (CountriesEvent) -> Unit
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        if(state.isLoading) {
-            CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center)
-            )
-        } else {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                items(state.countries) { country ->
-                    CountryItem(
-                        country = country,
+    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+
+        Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
+            if (state.isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    items(state.countries) { country ->
+                        CountryItem(
+                            country = country,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { event.invoke(CountriesEvent.SelectCountry(country.code)) }
+                                .padding(16.dp)
+                        )
+                    }
+                }
+
+                if (state.selectedCountry != null) {
+                    CountryDialog(
+                        country = state.selectedCountry,
+                        onDismiss = { event.invoke(CountriesEvent.CloseDialog) },
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { event.invoke(CountriesEvent.SelectCountry(country.code)) }
+                            .clip(RoundedCornerShape(5.dp))
+                            .background(Color.White)
                             .padding(16.dp)
                     )
                 }
-            }
-
-            if(state.selectedCountry != null) {
-                CountryDialog(
-                    country = state.selectedCountry,
-                    onDismiss = { event.invoke(CountriesEvent.CloseDialog) },
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(5.dp))
-                        .background(Color.White)
-                        .padding(16.dp)
-                )
             }
         }
     }
