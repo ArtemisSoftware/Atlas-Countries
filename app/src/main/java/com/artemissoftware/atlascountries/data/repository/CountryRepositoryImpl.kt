@@ -13,13 +13,15 @@ import com.artemissoftware.atlascountries.domain.repository.CountryRepository
 class CountryRepositoryImpl(private val apolloClient: ApolloClient):CountryRepository {
 
     override suspend fun getCountries(): List<Country> {
-        return apolloClient
-            .query(CountriesQuery())
-            .execute()
-            .data
-            ?.countries
-            ?.map { it.toCountry() }
-            ?: emptyList()
+        return (apolloClient
+                    .query(CountriesQuery())
+                    .execute()
+                    .data
+                    ?.countries
+                    ?.map { it.toCountry() }
+                    ?: emptyList<Country>()
+                ).sortedBy { it.name }
+
     }
 
     override suspend fun getCountry(code: String): Detail? {
